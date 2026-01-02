@@ -167,7 +167,21 @@ def reveal_bw_image(filename):
     Returns:
         result: an Image object containing the hidden image
     """
-    pass
+    pixels = img_to_pix(filename)
+    img = Image.open(filename)
+    size = img.size
+    lsb = []
+    for pix in pixels:
+        m = extract_end_bits(1, pix)
+        if(m == 1):
+            m = 255 
+        lsb.append(m)
+    return pix_to_img(lsb, size, 'L')
+    
+        
+        
+    
+    
 
 
 def reveal_color_image(filename):
@@ -178,7 +192,21 @@ def reveal_color_image(filename):
     Returns:
         result: an Image object containing the hidden image
     """
-    pass
+    pixels = img_to_pix(filename)
+    img = Image.open(filename)
+    size = img.size
+    lsb = []
+    for pix in pixels:
+        r,g,b = extract_end_bits(3, pix)
+        r = r * (255 % r)
+        g = g * (255 % g)
+        b = b * (255 * b)
+        lsb.append((r,g,b))
+    return pix_to_img(lsb , size, "RGB")
+        
+        
+        
+        
 
 
 def reveal_image(filename):
@@ -221,24 +249,27 @@ def draw_kerb(filename, kerb):
 
 
 def main():
-    im = Image.open('image_15.png')
-    width, height = im.size
-    pixels = img_to_pix('image_15.png')
-    im = pix_to_img(pixels, (width, height), 'RGB')
-    non_filtered_pixels = filter(pixels,'none')
-    im = pix_to_img(non_filtered_pixels, (width, height), 'RGB')
-    im.show()
-
-    red_filtered_pixels = filter(pixels,'red')
-    im2 = pix_to_img(red_filtered_pixels,(width,height), 'RGB')
-    im2.show()
-
-    # Uncomment the following lines to test part 2
-    #im = reveal_image('hidden1.bmp')
+    # im = Image.open('image_15.png')
+    # width, height = im.size
+    # pixels = img_to_pix('image_15.png')
+    # im = pix_to_img(pixels, (width, height), 'RGB')
+    # non_filtered_pixels = filter(pixels,'none')
+    # im = pix_to_img(non_filtered_pixels, (width, height), 'RGB')
     # im.show()
 
-    #im2 = reveal_image('hidden2.bmp')
+    # red_filtered_pixels = filter(pixels,'red')
+    # im2 = pix_to_img(red_filtered_pixels,(width,height), 'RGB')
     # im2.show()
+
+    # Uncomment the following lines to test part 2
+    # im = Image.open('hidden1.bmp')
+    # im.show()
+    # im = reveal_image('hidden1.bmp')
+    # im.show()
+    # im.save("hidden1_output.bmp")
+    im2 = reveal_image('hidden2.bmp')
+    im2.show()
+    im2.save("hidden2_output.bmp")
     
 if __name__ == '__main__':
     main()
