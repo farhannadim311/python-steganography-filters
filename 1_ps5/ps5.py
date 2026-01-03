@@ -198,10 +198,12 @@ def reveal_color_image(filename):
     lsb = []
     for pix in pixels:
         r,g,b = extract_end_bits(3, pix)
-        r = r * (255 % r)
-        g = g * (255 % g)
-        b = b * (255 * b)
+        # 7 is the max value that we can achieve because we are extracting the last 3 bits and we can do 255 / 7 and multiply that by the r,g,b for a better contrast
+        r = int(r * 36.4285714286)
+        g = int(g * 36.4285714286)
+        b = int(b * 36.4285714286)
         lsb.append((r,g,b))
+
     return pix_to_img(lsb , size, "RGB")
         
         
@@ -260,16 +262,20 @@ def main():
     # red_filtered_pixels = filter(pixels,'red')
     # im2 = pix_to_img(red_filtered_pixels,(width,height), 'RGB')
     # im2.show()
+    # im2.save("filtered_image_15.png")
 
-    # Uncomment the following lines to test part 2
-    # im = Image.open('hidden1.bmp')
-    # im.show()
-    # im = reveal_image('hidden1.bmp')
-    # im.show()
-    # im.save("hidden1_output.bmp")
-    im2 = reveal_image('hidden2.bmp')
-    im2.show()
-    im2.save("hidden2_output.bmp")
+    # # Uncomment the following lines to test part 2
+    # # im = Image.open('hidden1.bmp')
+    # # im.show()
+    # # im = reveal_image('hidden1.bmp')
+    # # im.show()
+    # # im.save("hidden1_output.bmp")
+    # im2 = reveal_image('hidden2.bmp')
+    # im2.show()
+    # im2.save("hidden2_output.bmp")
+    draw_kerb('filtered_image_15.png', "Rats are cute!")
+    draw_kerb('hidden1_output.bmp', "Rats are cute!")
+    draw_kerb('hidden2_output.bmp', "Rats are cute!")
     
 if __name__ == '__main__':
     main()
